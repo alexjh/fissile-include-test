@@ -1,0 +1,34 @@
+---
+name: ntpd
+description: some ntp release
+templates:
+  ctl.sh: bin/ctl
+  ntp.conf.erb: etc/ntp.conf
+
+packages:
+- ntp-4.2.8p2
+
+properties:
+  ntp_conf:
+    description: "ntpd's configuration file (ntp.conf)"
+  with.json.default:
+    description: A property to test JSON serialization
+    default: { key: value }
+  tor.private_key:
+    # This is not actually relevant for this release; it's here to test
+    # fissile's behaviour when multiple releases define a property.
+    default: M3Efvw4x3kzW+YBWR1oPG7hoUcPcFYXWxoYkYR5+KT4=
+
+consumes:
+- name: ntp-server
+  type: ntpd
+- type: ntp
+  optional: true
+- type: missing
+  optional: true
+
+provides:
+- name: ntp-server
+  type: ntpd
+- name: ntp-client
+  type: ntp

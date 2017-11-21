@@ -1,0 +1,8 @@
+FROM {{ index . "base_image" }}
+
+ADD packages-src /var/vcap/packages-src/
+
+LABEL {{ index . "fissile_version" }}
+{{ if .packages }}
+LABEL {{ range .packages }} "fingerprint.{{.Fingerprint}}"="{{.Name}}" {{ end }}
+{{ end }}

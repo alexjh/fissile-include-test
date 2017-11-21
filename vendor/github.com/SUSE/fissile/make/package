@@ -1,0 +1,14 @@
+#!/bin/sh
+
+GIT_ROOT=${GIT_ROOT:-$(git rev-parse --show-toplevel)}
+
+. ${GIT_ROOT}/make/include/versioning
+
+set -o errexit -o nounset
+
+OSES="linux darwin"
+GOARCH=${GOARCH:-$(go env GOARCH)}
+
+for OS in ${OSES}; do
+  tar czf ${APP_VERSION}.${OS}-${GOARCH}.tgz -C build/${OS}-${GOARCH} fissile
+done

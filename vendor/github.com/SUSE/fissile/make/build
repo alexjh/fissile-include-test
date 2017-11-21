@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -o errexit
+
+GIT_ROOT=${GIT_ROOT:-$(git rev-parse --show-toplevel)}
+
+set +o errexit
+
+. ${GIT_ROOT}/make/include/versioning
+
+set -o errexit -o nounset
+
+${GIT_ROOT}/make/bindata
+
+. make/include/colors.sh
+
+printf "%b==> Building %b\n" "${OK_COLOR}" "${NO_COLOR}"
+
+OSES="${OSES:-linux darwin}"
+GOARCH=${GOARCH:-$(go env GOARCH)}
+
+for OS in ${OSES}; do
+  GOOS="${OS}" go build -ldflags="-X main.version=${APP_VERSION}" -o "build/${OS}-${GOARCH}/fissile" 
+done 
+

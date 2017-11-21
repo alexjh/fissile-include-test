@@ -1,0 +1,18 @@
+---
+roles:
+- name: myrole
+  scripts: ["myrole.sh"]
+  run:
+    memory: 1
+  jobs:
+  - name: new_hostname
+    release_name: tor
+  - name: tor
+    release_name: tor
+  - name: ntpd
+    release_name: ntp
+- name: foorole
+  type: bosh-task
+  jobs:
+  - name: tor
+    release_name: tor
